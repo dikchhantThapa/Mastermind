@@ -14,6 +14,8 @@ import com.linkedin.interview.mastermind.api.dto.MastermindGameRequestBody;
 import com.linkedin.interview.mastermind.api.dto.MastermindGameResponse;
 import com.linkedin.interview.mastermind.services.MastermindService;
 
+
+
 @RestController
 @RequestMapping("/api/v1/mastermind")
 public class MastermindGameController {
@@ -44,7 +46,7 @@ public class MastermindGameController {
 			return new ResponseEntity<MastermindGameResponse>(responseBody, HttpStatus.OK);
 		}
 
-		throw new RuntimeException("");
+		throw new RuntimeException("Failed attempt");
 	}
 	
 	
