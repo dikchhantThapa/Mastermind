@@ -1,5 +1,7 @@
 package com.linkedin.interview.mastermind.api.dto;
 
+import java.util.List;
+
 public class MastermindGameResponse {
 	
 	
@@ -10,7 +12,7 @@ public class MastermindGameResponse {
 	private String msg;
 	
 	private String id;
-
+	
 	public int getNumOfTriesleft() {
 		return numOfTriesleft;
 	}

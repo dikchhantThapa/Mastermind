@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.linkedin.interview.mastermind.api.dto.ErrorResponse;
-import com.linkedin.interview.mastermind.api.dto.MastermindGameRequestBody;
+import com.linkedin.interview.mastermind.api.dto.MastermindGameInitiatationResponse;
+import com.linkedin.interview.mastermind.api.dto.MastermindGameInitiationRequest;
 import com.linkedin.interview.mastermind.api.dto.MastermindGameResponse;
 import com.linkedin.interview.mastermind.api.exception.FailedInitiationException;
 import com.linkedin.interview.mastermind.api.exception.NoGameFoundException;
@@ -28,31 +29,51 @@ public class MastermindGameController {
 	@Autowired
 	private MastermindService service;
 	
-	@PostMapping("/initialization")
-	public ResponseEntity<MastermindGameResponse> initGame() {
-
-		MastermindGameResponse responseBody = service.initializeGame();
+	@PostMapping("/game")
+	public ResponseEntity<MastermindGameInitiatationResponse> initGame(@RequestBody MastermindGameInitiationRequest requestBody) {
+		
+		
+		
+		MastermindGameInitiatationResponse responseBody = service.initializeGame(requestBody.getPlayers(),requestBody.getTotalTries(),requestBody.getDifficulty());
 
 		if (responseBody!=null) {
-			return new ResponseEntity<MastermindGameResponse>(responseBody, HttpStatus.OK);
+			return new ResponseEntity<MastermindGameInitiatationResponse>(responseBody, HttpStatus.OK);
 		}
+		
+		
+		//if a null response was sent back throw a failed initiation exception
+		throw new FailedInitiationException("Could not initialize game, try again later!");
+	}
+	
+	@PostMapping("/game/{id}/move")
+	public ResponseEntity<MastermindGameInitiatationResponse> initGame(@RequestBody MastermindGameInitiationRequest requestBody) {
+		
+		
+		
+		MastermindGameInitiatationResponse responseBody = service.initializeGame(requestBody.getPlayers(),requestBody.getTotalTries(),requestBody.getDifficulty());
 
+		if (responseBody!=null) {
+			return new ResponseEntity<MastermindGameInitiatationResponse>(responseBody, HttpStatus.OK);
+		}
+		
+		
+		//if a null response was sent back throw a failed initiation exception
 		throw new FailedInitiationException("Could not initialize game, try again later!");
 	}
 	
 	
-	@PostMapping("/attempt")
-	public ResponseEntity<MastermindGameResponse> guessNumbers(@RequestBody MastermindGameRequestBody reqBody) {
-
-		MastermindGameResponse responseBody = service.guessNumbers(reqBody.getGuess());
-
-		if (responseBody!=null) {
-			return new ResponseEntity<MastermindGameResponse>(responseBody, HttpStatus.OK);
-		}
-
-		throw new NoGameFoundException("Please create a new game!");
-	}
-	
+//	@PostMapping("/attempt")
+//	public ResponseEntity<MastermindGameResponse> guessNumbers(@RequestBody MastermindGameRequestBody reqBody) {
+//
+//		MastermindGameResponse responseBody = service.guessNumbers(reqBody.getGuess());
+//
+//		if (responseBody!=null) {
+//			return new ResponseEntity<MastermindGameResponse>(responseBody, HttpStatus.OK);
+//		}
+//
+//		throw new NoGameFoundException("Please create a new game!");
+//	}
+//	
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleFailedInitiationException(FailedInitiationException exception) {
 		ErrorResponse err = new ErrorResponse();

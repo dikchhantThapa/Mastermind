@@ -1,7 +1,7 @@
 package com.linkedin.interview.mastermind.api.dto;
 
 
-public class MastermindGameRequestBody {
+public class MastermindGamePlayRequestBody {
 	
 	private int[] guess;
 	

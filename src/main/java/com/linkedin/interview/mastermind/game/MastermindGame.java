@@ -1,10 +1,10 @@
 package com.linkedin.interview.mastermind.game;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
+import com.linkedin.interview.mastermind.api.dto.Player;
 
 
 //oops concept
@@ -13,19 +13,21 @@ public class MastermindGame {
 	private String id;
 	
 	private int[] randomNumbers;
-	
-	//private HashSet<Integer> randomNumbersSet; //extra
-	
+		
 	Map<Integer, Integer> occurrencesInComputer = new HashMap<>();
 	
-	private boolean hasWon; 
-		
-	private int totalTriesLeft;
+	private boolean isOver; 
 	
+	private Player winner;
+			
+	private HashMap<String,Player> players;
 	
+	private Player currentTurn;
 	
 	public void initRandomNumbers(int[] randomNumbers) {
+		
 		this.randomNumbers = randomNumbers;	
+		
 		
 		 for (int num : this.randomNumbers) {
 	            occurrencesInComputer.put(num, occurrencesInComputer.getOrDefault(num, 0) + 1);
@@ -75,7 +77,8 @@ public class MastermindGame {
         
         else {
         	if(correctNumberGuesses == this.randomNumbers.length && correctPositionGuesses == this.randomNumbers.length) {
-        		hasWon = true;
+        		isOver = true;
+        		winner = currentTurn;
         	}
         	return String.format("%s correct number and %s correct location", correctNumberGuesses,correctPositionGuesses);
         }
@@ -94,24 +97,41 @@ public class MastermindGame {
 	}
 
 
-	public boolean isHasWon() {
-		return hasWon;
+
+
+
+	public Map<Integer, Integer> getOccurrencesInComputer() {
+		return occurrencesInComputer;
 	}
 
-
-	public void setHasWon(boolean hasWon) {
-		this.hasWon = hasWon;
+	public void setOccurrencesInComputer(Map<Integer, Integer> occurrencesInComputer) {
+		this.occurrencesInComputer = occurrencesInComputer;
 	}
 
-
-	public int getTotalTriesLeft() {
-		return totalTriesLeft;
+	public boolean isOver() {
+		return isOver;
 	}
 
-
-	public void setTotalTriesLeft(int totalTriesLeft) {
-		this.totalTriesLeft = totalTriesLeft;
+	public void setOver(boolean isOver) {
+		this.isOver = isOver;
 	}
+
+	public Player getWinner() {
+		return winner;
+	}
+
+	public void setWinner(Player winner) {
+		this.winner = winner;
+	}
+
+	public HashMap<String, Player> getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(HashMap<String, Player> players) {
+		this.players = players;
+	}
+
 
 
 	
