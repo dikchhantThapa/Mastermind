@@ -64,16 +64,22 @@ public class MastermindService {
 	
 	public MastermindGameResponse guessNumbers(int[] userGuess) {
 		
-		
+		if(!game.isHasWon() && game.getTotalTriesLeft()>0) {
 		MastermindGameResponse response = new MastermindGameResponse();
 		
 		String result = game.guessNumbers(userGuess);
+		game.setTotalTriesLeft(game.getTotalTriesLeft()-1);
 		response.setHasWon(game.isHasWon());
 		response.setNumOfTriesleft(game.getTotalTriesLeft());
 		response.setId(game.getId());
 		response.setMsg(result);
 		
+		
 		return response;
+		
+		}
+		
+		return null;
 	}
 	
 	

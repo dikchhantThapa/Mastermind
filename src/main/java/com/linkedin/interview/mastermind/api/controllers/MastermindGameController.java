@@ -3,15 +3,19 @@ package com.linkedin.interview.mastermind.api.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.linkedin.interview.mastermind.api.dto.ErrorResponse;
 import com.linkedin.interview.mastermind.api.dto.MastermindGameRequestBody;
 import com.linkedin.interview.mastermind.api.dto.MastermindGameResponse;
+import com.linkedin.interview.mastermind.api.exception.FailedInitiationException;
+import com.linkedin.interview.mastermind.api.exception.NoGameFoundException;
 import com.linkedin.interview.mastermind.services.MastermindService;
 
 
@@ -33,7 +37,7 @@ public class MastermindGameController {
 			return new ResponseEntity<MastermindGameResponse>(responseBody, HttpStatus.OK);
 		}
 
-		throw new RuntimeException("Could not initialize game, try again later!");
+		throw new FailedInitiationException("Could not initialize game, try again later!");
 	}
 	
 	
@@ -46,9 +50,26 @@ public class MastermindGameController {
 			return new ResponseEntity<MastermindGameResponse>(responseBody, HttpStatus.OK);
 		}
 
-		throw new RuntimeException("Failed attempt");
+		throw new NoGameFoundException("Please create a new game!");
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleFailedInitiationException(FailedInitiationException exception) {
+		ErrorResponse err = new ErrorResponse();
+		err.setCode(500);
+		err.setMsg(exception.getMessage());
+		
+		return new ResponseEntity<ErrorResponse>(err, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleNoGameFoundException(NoGameFoundException exception) {
+		ErrorResponse err = new ErrorResponse();
+		err.setCode(400);
+		err.setMsg(exception.getMessage());
+		
+		return new ResponseEntity<ErrorResponse>(err, HttpStatus.BAD_REQUEST);
+	}
 
 }

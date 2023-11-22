@@ -1,8 +1,9 @@
 package com.linkedin.interview.mastermind.game;
 
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -13,7 +14,9 @@ public class MastermindGame {
 	
 	private int[] randomNumbers;
 	
-	private HashSet<Integer> randomNumbersSet; //extra
+	//private HashSet<Integer> randomNumbersSet; //extra
+	
+	Map<Integer, Integer> occurrencesInComputer = new HashMap<>();
 	
 	private boolean hasWon; 
 		
@@ -22,10 +25,12 @@ public class MastermindGame {
 	
 	
 	public void initRandomNumbers(int[] randomNumbers) {
-		this.randomNumbers = randomNumbers;
-		this.randomNumbersSet = Arrays.stream(randomNumbers).boxed().collect(Collectors.toCollection(HashSet::new));
+		this.randomNumbers = randomNumbers;	
+		
+		 for (int num : this.randomNumbers) {
+	            occurrencesInComputer.put(num, occurrencesInComputer.getOrDefault(num, 0) + 1);
+	       }
 	}
-	
 	
 	public String getId() {
 		return id;
@@ -42,21 +47,27 @@ public class MastermindGame {
 		int correctNumberGuesses = 0;
 		int correctPositionGuesses = 0;
 		
-        for (int i = 0; i < userSupplied.length; i++) {
-            int userNumber = userSupplied[i];
-
-            // Check for correct number guess
-            if (randomNumbersSet.contains(userNumber)) {
-                correctNumberGuesses++;
-
-                // Check for correct position guess
-                if (randomNumbers[i] == userNumber) {
+		HashMap<Integer,Integer> occurrencesInUserSupplied = new HashMap<>();
+		
+		for (int num : userSupplied) {
+			occurrencesInUserSupplied.put(num, occurrencesInUserSupplied.getOrDefault(num, 0) + 1);
+		}
+		
+		for(int key: occurrencesInUserSupplied.keySet()) {
+			if(occurrencesInComputer.containsKey(key)) {
+				correctNumberGuesses += Math.min(occurrencesInComputer.get(key), occurrencesInUserSupplied.get(key));
+			}
+		}
+		
+			
+		
+		 for (int i = 0; i < userSupplied.length; i++) {
+			 
+	            if (randomNumbers[i] == userSupplied[i]) {
                     correctPositionGuesses++;
                 }
-            }
-        }
-		
-       this.totalTriesLeft--;
+
+	        }
         
         if(correctNumberGuesses==0) {
         	return "all incorrect";
