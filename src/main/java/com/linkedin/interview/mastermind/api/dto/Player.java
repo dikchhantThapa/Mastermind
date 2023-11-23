@@ -12,13 +12,15 @@ public class Player {
 	
 	public int totalTriesLeft;
 	
-	
+	public boolean hasWon;
 
 	public Player(String userId, List<Move> moveHistory, int totalTriesLeft) {
 		super();
 		this.userId = userId;
 		this.moveHistory = moveHistory;
 		this.totalTriesLeft = totalTriesLeft;
+		this.hasWon = false;
+		
 	}
 
 	public String getUserId() {
@@ -44,7 +46,13 @@ public class Player {
 	public void setTotalTriesLeft(int totalTriesLeft) {
 		this.totalTriesLeft = totalTriesLeft;
 	}
-     
-	
 
+	public boolean isHasWon() {
+		return hasWon;
+	}
+
+	public void setHasWon(boolean hasWon) {
+		this.hasWon = hasWon;
+	}
+     
 }

@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,7 @@ import com.linkedin.interview.mastermind.game.MastermindGame;
 @Service
 public class MastermindService {
 
-	
+	private static final Logger logger = LoggerFactory.getLogger(MastermindService.class);
 	
 	private final String RANDOM_NUM_URL = "https://www.random.org/integers/?num=%s&min=1&max=6&col=1&base=10&format=plain&rnd=new";
 	
@@ -109,23 +111,28 @@ public class MastermindService {
 			
 			if(!game.isOver()) {
 				HashMap<String,Player> players = game.getPlayers();
-				if(players.containsKey(userId)) {
+				if (players.containsKey(userId)) {
 					Player player = players.get(userId);
-					String outcome = game.guessNumbers(guess);
-					List<Move> playerMoves =  player.getMoveHistory();
-					playerMoves.add(new Move(guess, playerMoves.size()+1, outcome));
-					MastermindGameResponse response = new MastermindGameResponse();
-					//response.setHasWon(player);
-					response.setMsg(outcome);
-					response.setNumOfTriesleft(player.getTotalTriesLeft());
-					response.setMoveHistory(player.getMoveHistory());
-					return response;
+					if (player.getTotalTriesLeft() > 0) {
+						String outcome = game.guessNumbers(guess,player);
+						player.setTotalTriesLeft(player.getTotalTriesLeft() - 1);
+						List<Move> playerMoves = player.getMoveHistory();
+						playerMoves.add(new Move(guess, playerMoves.size() + 1, outcome));
+						MastermindGameResponse response = new MastermindGameResponse();
+						
+						
+						response.setHasWon(player.isHasWon());
+						response.setNumOfTriesleft(player.getTotalTriesLeft());
+						response.setMoveHistory(player.getMoveHistory());
+						return response;
+					}
 				} 
 				else {
 				 // player is not allowed in the game
 				}
 				
 			} else {
+				logger.info("game is not over");
 				// throw game over or send some other response
 			}
 		} 

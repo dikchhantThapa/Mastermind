@@ -31,14 +31,6 @@ public class MastermindGameResponse {
 		this.hasWon = hasWon;
 	}
 
-	public String getMsg() {
-		return msg;
-	}
-
-	public void setMsg(String msg) {
-		this.msg = msg;
-	}
-
 	public List<Move> getMoveHistory() {
 		return moveHistory;
 	}

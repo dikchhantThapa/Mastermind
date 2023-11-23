@@ -54,9 +54,9 @@ public class MastermindGameController {
 
 		MastermindGameResponse responseBody = service.guessNumbers(reqBody.getGuess(),reqBody.getUserId(),gameId);
 
-//		if (responseBody!=null) {
-//			return new ResponseEntity<MastermindGameResponse>(responseBody, HttpStatus.OK);
-//		}
+		if (responseBody!=null) {
+			return new ResponseEntity<MastermindGameResponse>(responseBody, HttpStatus.OK);
+		}
 //
 //		throw new NoGameFoundException("Please create a new game!");
 		return null;

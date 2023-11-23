@@ -18,12 +18,10 @@ public class MastermindGame {
 	
 	private boolean isOver; 
 	
-	private Player winner;
+	private String winner;
 			
 	private HashMap<String,Player> players;
-	
-	private Player currentTurn;
-	
+		
 	public void initRandomNumbers(int[] randomNumbers) {
 		
 		this.randomNumbers = randomNumbers;	
@@ -44,7 +42,7 @@ public class MastermindGame {
 	}
 
 
-	public String guessNumbers(int[] userSupplied) {
+	public String guessNumbers(int[] userSupplied, Player player) {
 		
 		int correctNumberGuesses = 0;
 		int correctPositionGuesses = 0;
@@ -61,8 +59,7 @@ public class MastermindGame {
 			}
 		}
 		
-			
-		
+
 		 for (int i = 0; i < userSupplied.length; i++) {
 			 
 	            if (randomNumbers[i] == userSupplied[i]) {
@@ -78,7 +75,8 @@ public class MastermindGame {
         else {
         	if(correctNumberGuesses == this.randomNumbers.length && correctPositionGuesses == this.randomNumbers.length) {
         		isOver = true;
-        		winner = currentTurn;
+        		player.setHasWon(true);
+        		this.winner = player.getUserId();
         	}
         	return String.format("%s correct number and %s correct location", correctNumberGuesses,correctPositionGuesses);
         }
@@ -116,11 +114,11 @@ public class MastermindGame {
 		this.isOver = isOver;
 	}
 
-	public Player getWinner() {
+	public String getWinner() {
 		return winner;
 	}
 
-	public void setWinner(Player winner) {
+	public void setWinner(String winner) {
 		this.winner = winner;
 	}
 
