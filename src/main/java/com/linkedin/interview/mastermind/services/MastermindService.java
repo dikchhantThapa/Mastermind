@@ -17,6 +17,7 @@ import com.linkedin.interview.mastermind.api.dto.MastermindGameInitiatationRespo
 import com.linkedin.interview.mastermind.api.dto.MastermindGameResponse;
 import com.linkedin.interview.mastermind.api.dto.Move;
 import com.linkedin.interview.mastermind.api.dto.Player;
+import com.linkedin.interview.mastermind.api.exception.GamePlayException;
 import com.linkedin.interview.mastermind.game.MastermindGame;
 
 
@@ -102,8 +103,9 @@ public class MastermindService {
 	 * @param userId
 	 * @param gameId
 	 * @return
+	 * @throws Exception 
 	 */
-	public MastermindGameResponse guessNumbers(int[] guess, String userId, String gameId) {
+	public MastermindGameResponse guessNumbers(int[] guess, String userId, String gameId) throws Exception {
 		
 		if(gameDirectory.containsKey(gameId)) {
 			
@@ -125,15 +127,27 @@ public class MastermindService {
 						response.setNumOfTriesleft(player.getTotalTriesLeft());
 						response.setMoveHistory(player.getMoveHistory());
 						return response;
+					} else {
+						throw new GamePlayException("Player has no more tries left");
 					}
 				} 
 				else {
-				 // player is not allowed in the game
+					throw new GamePlayException("Player is not part of this game!");
 				}
 				
 			} else {
 				logger.info("game is not over");
-				// throw game over or send some other response
+								
+				String result = null;
+				
+				if(game.getWinner()!=null) {
+					result = game.getWinner() + " won";
+				} else {
+					result = "game was a draw!";
+				}
+				
+				
+				throw new GamePlayException("This game is already over! Result: " + result);
 			}
 		} 
 		

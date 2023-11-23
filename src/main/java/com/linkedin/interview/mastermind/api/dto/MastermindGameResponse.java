@@ -45,6 +45,14 @@ public class MastermindGameResponse {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getMsg() {
+		return msg;
+	}
+
+	public void setMsg(String msg) {
+		this.msg = msg;
 	}  
 	
 	

@@ -18,7 +18,7 @@ import com.linkedin.interview.mastermind.api.dto.MastermindGameInitiationRequest
 import com.linkedin.interview.mastermind.api.dto.MastermindGamePlayRequestBody;
 import com.linkedin.interview.mastermind.api.dto.MastermindGameResponse;
 import com.linkedin.interview.mastermind.api.exception.FailedInitiationException;
-import com.linkedin.interview.mastermind.api.exception.NoGameFoundException;
+import com.linkedin.interview.mastermind.api.exception.GamePlayException;
 import com.linkedin.interview.mastermind.services.MastermindService;
 
 
@@ -50,7 +50,7 @@ public class MastermindGameController {
 
 
 	@PostMapping("/game/{gameId}/play")
-	public ResponseEntity<MastermindGameResponse> guessNumbers(@PathVariable String gameId, @RequestBody MastermindGamePlayRequestBody reqBody) {
+	public ResponseEntity<MastermindGameResponse> guessNumbers(@PathVariable String gameId, @RequestBody MastermindGamePlayRequestBody reqBody) throws Exception {
 
 		MastermindGameResponse responseBody = service.guessNumbers(reqBody.getGuess(),reqBody.getUserId(),gameId);
 
@@ -74,7 +74,7 @@ public class MastermindGameController {
 	
 	
 	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleNoGameFoundException(NoGameFoundException exception) {
+	public ResponseEntity<ErrorResponse> handleNoGameFoundException(GamePlayException exception) {
 		ErrorResponse err = new ErrorResponse();
 		err.setCode(400);
 		err.setMsg(exception.getMessage());

@@ -19,7 +19,7 @@ public class MastermindGame {
 	private boolean isOver; 
 	
 	private String winner;
-			
+				
 	private HashMap<String,Player> players;
 		
 	public void initRandomNumbers(int[] randomNumbers) {
@@ -77,6 +77,7 @@ public class MastermindGame {
         		isOver = true;
         		player.setHasWon(true);
         		this.winner = player.getUserId();
+        		
         	}
         	return String.format("%s correct number and %s correct location", correctNumberGuesses,correctPositionGuesses);
         }
@@ -130,16 +131,5 @@ public class MastermindGame {
 		this.players = players;
 	}
 
-
-
-	
-
-
-
-	 
-	
-	
-	
-	
 
 }
