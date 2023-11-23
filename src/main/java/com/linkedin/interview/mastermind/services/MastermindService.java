@@ -110,6 +110,7 @@ public class MastermindService {
 		if(gameDirectory.containsKey(gameId)) {
 			
 			MastermindGame game = gameDirectory.get(gameId);
+			game.evaluateDraw();
 			
 			if(!game.isOver()) {
 				HashMap<String,Player> players = game.getPlayers();

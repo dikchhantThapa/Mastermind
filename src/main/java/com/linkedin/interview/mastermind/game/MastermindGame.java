@@ -1,7 +1,6 @@
 package com.linkedin.interview.mastermind.game;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.linkedin.interview.mastermind.api.dto.Player;
@@ -25,7 +24,6 @@ public class MastermindGame {
 	public void initRandomNumbers(int[] randomNumbers) {
 		
 		this.randomNumbers = randomNumbers;	
-		
 		
 		 for (int num : this.randomNumbers) {
 	            occurrencesInComputer.put(num, occurrencesInComputer.getOrDefault(num, 0) + 1);
@@ -67,7 +65,8 @@ public class MastermindGame {
                 }
 
 	        }
-        
+		 
+		 
         if(correctNumberGuesses==0) {
         	return "all incorrect";
         } 
@@ -79,6 +78,7 @@ public class MastermindGame {
         		this.winner = player.getUserId();
         		
         	}
+        	
         	return String.format("%s correct number and %s correct location", correctNumberGuesses,correctPositionGuesses);
         }
 		
@@ -129,6 +129,16 @@ public class MastermindGame {
 
 	public void setPlayers(HashMap<String, Player> players) {
 		this.players = players;
+	}
+
+	public void evaluateDraw() {
+		for(Player player : players.values()) {
+			if(player.getTotalTriesLeft() > 0) {
+				return;
+			} 
+		}
+		this.isOver = true;
+		this.winner = null;
 	}
 
 
