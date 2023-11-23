@@ -9,10 +9,6 @@ public class MastermindGameResponse {
 	
 	private boolean hasWon;
 	
-	private String msg;
-	
-	private String id;
-	
 	private List<Move> moveHistory;
 	
 	public int getNumOfTriesleft() {
@@ -39,23 +35,5 @@ public class MastermindGameResponse {
 		this.moveHistory = moveHistory;
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getMsg() {
-		return msg;
-	}
-
-	public void setMsg(String msg) {
-		this.msg = msg;
-	}  
-	
-	
-	
 
 }
