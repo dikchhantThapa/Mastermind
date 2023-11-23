@@ -12,6 +12,12 @@ the right number combinations within 'm' attempts to win the game.
  The game is built on Spring Boot 3 Framework (java 17) using Maven as a build tool. In order to run this application, you will need to install java 17 and compatible version of maven. Once done, clone the repository to local using git and then create a jar of the application. To do this, please navigate to the project folder and run the command ```mvn clean install```. Then, navigate to the subfolder named target using command line and run the command: ```java -jar mastermind-0.0.1.jar```. The application should run. By default, the game runs in localhost on port 8080. This game implements REST API to interact with the game and lacks a UI at this moment therefore, you will need to install postman, soapUI or any other software that 
 can be used for REST API testing.
 
+## Features Available:
+ - Ability to guess the combinations of 4 numbers
+ - Ability to view the history of guesses and their feedback
+ - The number of guesses remaining is displayed
+ - Add a configurable “difficulty level” and adjust the number of numbers that are used
+ - Extend to multi-player
 
 ## Guide to playing
 - ### Create a new game: 
