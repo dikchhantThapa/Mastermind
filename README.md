@@ -13,3 +13,8 @@ This game implements REST API to interact with the game and lacks a UI at this m
 can be used for REST API testing.
 
 
+## List of APIs (Guide to playing)
+
+- ### Create a new game: 
+  Before you can start playing, you need to create a new game. This can be done by making a 
+  ### POST api call
