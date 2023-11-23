@@ -1,5 +1,8 @@
 package com.linkedin.interview.mastermind.configs;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -12,9 +15,8 @@ public class MastermindGameConfigs {
 
 
 	@Bean
-	@Scope("prototype") //research scopes of spring bean
-	public MastermindGame chooseNewNumbers() {
-		return new MastermindGame();
+	public Map<String,MastermindGame> gameDirectory() {
+		return new HashMap<>();
 	}
 	
 	@Bean // needed to make request to the random number api that is provided

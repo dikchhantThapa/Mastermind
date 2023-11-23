@@ -12,6 +12,12 @@ public class Move {
 		return guessedNumbers;
 	}
 
+	public Move(int[] guessedNumbers, int moveNumber, String moveResult) {
+		this.guessedNumbers = guessedNumbers;
+		this.moveNumber = moveNumber;
+		this.moveResult = moveResult;
+	}
+
 	public void setGuessedNumbers(int[] guessedNumbers) {
 		this.guessedNumbers = guessedNumbers;
 	}

@@ -3,6 +3,8 @@ package com.linkedin.interview.mastermind.services;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +13,16 @@ import org.springframework.web.client.RestTemplate;
 
 import com.linkedin.interview.mastermind.api.dto.MastermindGameInitiatationResponse;
 import com.linkedin.interview.mastermind.api.dto.MastermindGameResponse;
+import com.linkedin.interview.mastermind.api.dto.Move;
 import com.linkedin.interview.mastermind.api.dto.Player;
 import com.linkedin.interview.mastermind.game.MastermindGame;
 
+
+/**
+ * 
+ * @author Dikchhant Thapa
+ *
+ */
 @Service
 public class MastermindService {
 
@@ -25,11 +34,18 @@ public class MastermindService {
 	private RestTemplate restTemplate;
 	
 	@Autowired
-	private MastermindGame game;
+	private Map<String, MastermindGame> gameDirectory;
 	
-	
-	// this method initializes a new game
+	/**
+	 * 
+	 * @param playerIds
+	 * @param numberOfTotalTries
+	 * @param difficulty
+	 * @return
+	 */
 	public MastermindGameInitiatationResponse initializeGame(String[] playerIds, int numberOfTotalTries, int difficulty) {
+		
+		MastermindGame game = new MastermindGame();
 		
 		MastermindGameInitiatationResponse responseOut = null;
 		
@@ -64,6 +80,9 @@ public class MastermindService {
 				responseOut = new MastermindGameInitiatationResponse();
 				responseOut.setGameId(gameId);
 				responseOut.setMsg("Game Sucessfully Created!");
+				
+				gameDirectory.put(gameId, game);
+				
 				return responseOut;
 			}
 
@@ -72,6 +91,46 @@ public class MastermindService {
 		
 		//if the api call did not return any random numbers we will return a null response obj to the client
 		return responseOut;
+	}
+	
+	
+	/**
+	 * @author Dikchhant Thapa
+	 * @param guess
+	 * @param userId
+	 * @param gameId
+	 * @return
+	 */
+	public MastermindGameResponse guessNumbers(int[] guess, String userId, String gameId) {
+		
+		if(gameDirectory.containsKey(gameId)) {
+			
+			MastermindGame game = gameDirectory.get(gameId);
+			
+			if(!game.isOver()) {
+				HashMap<String,Player> players = game.getPlayers();
+				if(players.containsKey(userId)) {
+					Player player = players.get(userId);
+					String outcome = game.guessNumbers(guess);
+					List<Move> playerMoves =  player.getMoveHistory();
+					playerMoves.add(new Move(guess, playerMoves.size()+1, outcome));
+					MastermindGameResponse response = new MastermindGameResponse();
+					//response.setHasWon(player);
+					response.setMsg(outcome);
+					response.setNumOfTriesleft(player.getTotalTriesLeft());
+					response.setMoveHistory(player.getMoveHistory());
+					return response;
+				} 
+				else {
+				 // player is not allowed in the game
+				}
+				
+			} else {
+				// throw game over or send some other response
+			}
+		} 
+		
+		return null;
 	}
 	
 //	public MastermindGameResponse guessNumbers(int[] userGuess) {

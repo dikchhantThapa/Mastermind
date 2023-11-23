@@ -36,6 +36,14 @@ public class Player {
 	public void setMoveHistory(List<Move> moveHistory) {
 		this.moveHistory = moveHistory;
 	}
+
+	public int getTotalTriesLeft() {
+		return totalTriesLeft;
+	}
+
+	public void setTotalTriesLeft(int totalTriesLeft) {
+		this.totalTriesLeft = totalTriesLeft;
+	}
      
 	
 

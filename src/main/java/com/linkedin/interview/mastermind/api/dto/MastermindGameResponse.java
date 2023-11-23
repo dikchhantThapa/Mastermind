@@ -13,6 +13,8 @@ public class MastermindGameResponse {
 	
 	private String id;
 	
+	private List<Move> moveHistory;
+	
 	public int getNumOfTriesleft() {
 		return numOfTriesleft;
 	}
@@ -35,6 +37,14 @@ public class MastermindGameResponse {
 
 	public void setMsg(String msg) {
 		this.msg = msg;
+	}
+
+	public List<Move> getMoveHistory() {
+		return moveHistory;
+	}
+
+	public void setMoveHistory(List<Move> moveHistory) {
+		this.moveHistory = moveHistory;
 	}
 
 	public String getId() {
