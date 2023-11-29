@@ -1,9 +1,9 @@
 package com.linkedin.interview.mastermind.game;
 
+import com.linkedin.interview.mastermind.api.dto.Player;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import com.linkedin.interview.mastermind.api.dto.Player;
 
 
 //oops concept
@@ -23,11 +23,13 @@ public class MastermindGame {
 		
 	public void initRandomNumbers(int[] randomNumbers) {
 		
-		this.randomNumbers = randomNumbers;	
-		
-		 for (int num : this.randomNumbers) {
-	            occurrencesInComputer.put(num, occurrencesInComputer.getOrDefault(num, 0) + 1);
-	       }
+		this.randomNumbers = randomNumbers;
+
+		// computer random values Map (Key = number, Value = total occurrences)
+		for (int num : this.randomNumbers) {
+			occurrencesInComputer.put(num, occurrencesInComputer.getOrDefault(num, 0) + 1);
+		}
+
 	}
 	
 	public String getId() {
@@ -46,37 +48,38 @@ public class MastermindGame {
 		int correctPositionGuesses = 0;
 		
 		HashMap<Integer,Integer> occurrencesInUserSupplied = new HashMap<>();
-		
+
+		// User supplied Map (Key = number, Value = total occurrences)
 		for (int num : userSupplied) {
 			occurrencesInUserSupplied.put(num, occurrencesInUserSupplied.getOrDefault(num, 0) + 1);
 		}
-		
+
+
 		for(int key: occurrencesInUserSupplied.keySet()) {
 			if(occurrencesInComputer.containsKey(key)) {
 				correctNumberGuesses += Math.min(occurrencesInComputer.get(key), occurrencesInUserSupplied.get(key));
 			}
 		}
 		
-
+		// search for correct position guesses
 		 for (int i = 0; i < userSupplied.length; i++) {
 			 
 	            if (randomNumbers[i] == userSupplied[i]) {
                     correctPositionGuesses++;
                 }
-
 	        }
 		 
 		 
-        if(correctNumberGuesses==0) {
+        if(correctNumberGuesses == 0) {
         	return "all incorrect";
         } 
         
-        else {
+        else {	// winning case
+			// correct numbers = 4, correct positions = 4 (both need to match the original array length to be winner)
         	if(correctNumberGuesses == this.randomNumbers.length && correctPositionGuesses == this.randomNumbers.length) {
         		isOver = true;
         		player.setHasWon(true);
         		this.winner = player.getUserId();
-        		
         	}
         	
         	return String.format("%s correct number and %s correct location", correctNumberGuesses,correctPositionGuesses);
